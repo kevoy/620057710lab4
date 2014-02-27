@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://www.teaching-materials.org/storage/catwalk.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title>Cat Walk</title>
+ </head>
+ <body>
+  
+  <img style="position: absolute; left: 310px;" src="{{ url_for('static', filename='cat.gif') }}">
+  
+  <script>
+  var img = document.getElementsByTagName('img')[0];
+
+  img.style.left= '0px';
+  var walkForwards = true;
+  var audioElement = document.createElement('audio');
+window.onload = function(){
+  audioElement.setAttribute('src', "{{ url_for('static', filename='meow.mp3') }}");
+  if(hasStorage()){
+    img.style.left = localStorage.currentLocation +'px';
+    walkForwards = JSON.parse(localStorage.currentDirection);
+    //alert(JSON.parse(localStorage.currentDirection));
+  }
+  img.onmouseover = playAudio;
+}
+function playAudio(){
+  audioElement.play();
+}
+function catWalk() {
+  var currentLeft = parseInt(img.style.left);
+  
+
+  if (walkForwards && (currentLeft > (window.innerWidth-img.width))) {
+    walkForwards = false;
+  }
+  if (!walkForwards && (currentLeft <= 0)) {
+    walkForwards = true;
+  }
+  
+  if (walkForwards) {
+    img.style.left = (currentLeft + 10) + 'px';
+  } else {
+    img.style.left = (currentLeft - 10) + 'px';
+  }
+  localStorage.currentLocation = currentLeft;
+  localStorage.currentDirection = JSON.stringify(walkForwards);
+}
+function hasStorage(){
+  if(!localStorage.getItem('currentLocation')){
+    return false;
+
+  }else{
+    return true;
+  }
+}
+window.setInterval(catWalk, 50);
+  </script>
+
+ 
+</body></html>
