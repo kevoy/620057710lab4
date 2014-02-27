@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<!-- saved from url=(0054)http://www.teaching-materials.org/storage/madlibs.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <title></title>
+ </head>
+ <body>
+ 
+ <h1>Mad Libs</h1>
+ 
+ <ul>
+  <li>Noun: <input type="text" id="noun">
+  </li><li>Adjective: <input type="text" id="adjective">
+  </li><li>Someone's Name: <input type="text" id="name">
+ </li></ul>
+ 
+ <button id="lib-button">Lib it!</button>
+  
+ <div id="story"></div>
+  
+  <script>
+
+function libIt() {
+  var storyDiv = document.getElementById("story");
+  var name = document.getElementById("name").value;
+  var adjective = document.getElementById("adjective").value;
+  var noun = document.getElementById("noun").value;
+  storyDiv.innerHTML = name + " married a " + adjective + " " + noun + "... So weird!";
+  storePhrase(name + " married a " + adjective + " " + noun + "... So weird!");
+}
+function storePhrase(val){
+  if(!localStorage.getItem('phrases')){
+    localStorage.phrases = JSON.stringify([val]);
+  }else{
+    var phrases = JSON.parse(localStorage.phrases);
+    phrases.push(val);
+    localStorage.phrases = JSON.stringify(phrases);
+  }
+}
+function storeFields(){
+  var nounField = document.getElementById('noun').value;
+  var adjField = document.getElementById('adjective').value;
+  var nameField = document.getElementById('name').value;
+  if(!isFieldEmpty(nounField)){
+    localStorage.noun = nounField;
+  }
+  //alert(adjField);
+  if(!isFieldEmpty(adjField)){
+    localStorage.adjective = adjField;
+  }
+  if(!isFieldEmpty(nameField)){
+    localStorage.name = nameField;
+  }
+}
+function isFieldEmpty(field){
+  if(field.length <=0){
+    //alert('true');
+    return true;
+  }else{
+    return false;
+   // alert('false');
+  }
+}
+function setFields(){
+  if(isStoragePresent('noun')){
+    var nounField = document.getElementById('noun');
+    nounField.value = localStorage.noun;
+  }
+  if(isStoragePresent('adjective')){
+    var adjField = document.getElementById('adjective');
+    adjField.value = localStorage.adjective;
+  }
+  if(isStoragePresent('name')){
+    var nameField = document.getElementById('name');
+    nameField.value = localStorage.name;
+  }
+}
+function isStoragePresent(field){
+  if(!localStorage.getItem(field)){
+    return false;
+  }
+  return true;
+}
+setFields();
+var libButton = document.getElementById('lib-button');
+libButton.addEventListener('click', libIt);
+var nounField = document.getElementById('noun');
+nounField.addEventListener('focus', storeFields);
+var adjField = document.getElementById('adjective');
+adjField.addEventListener('focus', storeFields);
+var nameField = document.getElementById('name');
+nameField.addEventListener('focus', storeFields);
+	</script>
+
+ 
+</body></html>
